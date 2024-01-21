@@ -56,26 +56,29 @@ ocd_dataset <- ocd_dataset |>
 
 mutate(
   across(cols_log, ~ as.logical(.x == "Yes")),
-  
-  
-  
-  
   across(2:8, tolower),
   across(10:11, tolower), 
   medication = tolower(medication),
-  
   age_cat = age_categories(age_years,
                            lower = 15,
                            upper = 70,
                            by = 5),
-  obs_cat = age_categories(y_bocs_obs,
-                              lower = 0,
-                              upper = 40,
-                              by = 10),
-  comp_cat = age_categories(y_bocs_comp,
-                            lower = 0,
-                            upper = 40,
-                            by = 10),
+  # Create categories for disorder severity
+  obs_cat = dplyr::case_when(
+      y_bocs_obs <= 19                   ~ "mild",
+      y_bocs_obs > 19 & y_bocs_obs <= 29 ~ "moderate",
+      y_bocs_obs > 29                    ~ "severe"
+    ),
+  comp_cat = dplyr::case_when(
+    y_bocs_comp <= 19                    ~ "mild",
+    y_bocs_comp > 19 & y_bocs_comp <= 29 ~ "moderate",
+    y_bocs_comp > 29                     ~ "severe"),
+  
+  #cats_fac = c("obs_cat", "comp_cat"),
+  # ocd_dataset$comp_cat <- as.factor(ocd_dataset$comp_cat),
+  # ocd_dataset$obs_cat <- as.factor (ocd_dataset$obs_cat),
+  # ocd_dataset$obs
+  #comp_cat <- as.factor(ocd_dataset$comp_cat),
   
   across(cols_fac, as.factor),
   
@@ -83,9 +86,12 @@ mutate(
   
   across(cols_date, as.Date),
  
-   )  
+)  
 
- 
+#convert new columns into factors
+ocd_dataset$comp_cat <- as.factor(ocd_dataset$comp_cat)
+
+ocd_dataset$obs_cat <- as.factor (ocd_dataset$obs_cat)
 
   
 #ocd_dataset%>% tabyl(age_cat)
@@ -103,5 +109,23 @@ mutate(
 #Time to plot data!---------------
 
   
-hist(ocd_dataset$age_years)
-plot(ocd_dataset$ethnicity,ocd_dataset$depr_diag)
+#hist(ocd_dataset$age_years)
+#plot(ocd_dataset$ethnicity,ocd_dataset$depr_diag)
+  
+  # typeof(ocd_dataset$age_cat)
+  # 
+  # class(ocd_dataset$age_cat)
+  # 
+  # table(ocd_dataset$age_cat)
+  # 
+  # agedist <- table(ocd_dataset$age_cat)
+  # barplot(agedist)
+  # ethnic <- table(ocd_dataset$ethnicity)
+  # barplot(ethnic)
+  
+#Group data------------------------------------------
+  ocd_by_education <- ocd_dataset %>%
+    group_by(education) %>%
+    tally()
+   
+    
