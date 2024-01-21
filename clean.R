@@ -1,3 +1,4 @@
+#install packages----------------------------------
 pacman::p_load(
   rio,        # importing data  
   here,       # relative file pathways  
@@ -7,7 +8,8 @@ pacman::p_load(
   tidyverse   # data management and visualization
 )
 
-#importing the data and editing datatypes 
+
+#import the data and edit datatypes---------------- 
 ocd_dataset <- import(here('data','ocd_dataset.csv'))
 library(readr)
 ocd_dataset <- read_csv(here("data","ocd_dataset.csv"), 
@@ -23,20 +25,83 @@ ocd_dataset <- read_csv(here("data","ocd_dataset.csv"),
 
 head(ocd_dataset)
 colnames(ocd_dataset)
-#manually renaming the columns:
+#manually rename the columns
 colnames(ocd_dataset) <- c("patient_id", "age_years","gender","ethnicity","marital_status","education","diag_date","prev_diag","family_hist","obs_type","comp_type","y_bocs_obs","y_bocs_comp","depr_diag","anx_ diag","medication")
 head(ocd_dataset)
+#data exploration-----------------------------
 View(ocd_dataset)
-#data exploration
 summary(ocd_dataset['age_years'])
-tabyl(ocd_dataset$'ethnicity')
 tabyl(ocd_dataset$'gender')
-clean_ocd_dataset <- ocd_dataset %>%
-  clean_names()
-glimpse(clean_ocd_dataset)
-tabyl(ocd_dataset$'ethnicity')
-tabyl(ocd_dataset$'ethnicity')
+
+#data transformation--------------------------
+
+#create column groups to change type after mutation
+
+cols_log=c("family_hist", "depr_diag","anx_diag")
+cols_fac=c("gender","ethnicity","marital_status","education","prev_diag","obs_type","comp_type","medication")
+cols_int=c("age_years","y_bocs_obs","y_bocs_comp")
+cols_date=c("diag_date")
+
+ocd_dataset <- ocd_dataset |>
+  
+  ###
+  clean_names() |>
+  
+  ###
+  # rename(date_onset = onset_date,
+  #        date_report = date_of_report,
+  #        district_res = adm3_name_res,
+  #        district_det = adm3_name_det)  |>
 
 
+mutate(
+  across(cols_log, ~ as.logical(.x == "Yes")),
+  
+  
+  
+  
+  across(2:8, tolower),
+  across(10:11, tolower), 
+  medication = tolower(medication),
+  
+  age_cat = age_categories(age_years,
+                           lower = 15,
+                           upper = 70,
+                           by = 5),
+  obs_cat = age_categories(y_bocs_obs,
+                              lower = 0,
+                              upper = 40,
+                              by = 10),
+  comp_cat = age_categories(y_bocs_comp,
+                            lower = 0,
+                            upper = 40,
+                            by = 10),
+  
+  across(cols_fac, as.factor),
+  
+  across(cols_int, as.integer),
+  
+  across(cols_date, as.Date),
+ 
+   )  
 
-clean_names()
+ 
+
+  
+#ocd_dataset%>% tabyl(age_cat)
+#ocd_dataset%>% tabyl(obs_cat)
+
+#ocd_dataset%>% tabyl(comp_cat)
+  
+  
+  
+  glimpse(ocd_dataset)
+
+#View(ocd_dataset)
+  
+  
+#Time to plot data!---------------
+
+  
+hist(ocd_dataset$age_years)
+plot(ocd_dataset$ethnicity,ocd_dataset$depr_diag)
