@@ -262,3 +262,4 @@ age_table <- ocd_dataset %>%
     col_name = "Gender")
 
 ggtexttable(age_table)
+
