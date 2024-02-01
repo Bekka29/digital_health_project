@@ -251,15 +251,25 @@ ocd_dataset %>%
       col_name = "Gender")
 
 #create text table for gender and age variables 
-age_table <- ocd_dataset %>%   
-  tabyl(age_cat, gender) %>%                    
-  adorn_totals(where = "both") %>%             
-  adorn_percentages(denominator = "col") %>%   
-  adorn_pct_formatting()  %>%                  
-  adorn_ns(position = "front") %>%             
-  adorn_title(                                 
+age_table <- ocd_dataset %>%
+  tabyl(age_cat, gender) %>%
+  adorn_totals(where = "both") %>%
+  adorn_percentages(denominator = "col") %>%
+  adorn_pct_formatting()  %>%
+  adorn_ns(position = "front") %>%
+  adorn_title(
     row_name = "Age Category",
     col_name = "Gender")
 
-ggtexttable(age_table)
+# ggtexttable(age_table)
+
+pacman::p_load(gridExtra)
+plot(tableGrob(age_table))
+
+
+
+
+
+
+
 
