@@ -3,22 +3,23 @@
 pacman::p_load(
   shiny, 
   bslib,
+  ggplot2
   )
 
 source("scripts/clean.R")
 
-glimpse(ocd_dataset)      
+glimpse(clean_ocd_dataset)      
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
     # Application title
-    titlePanel("Obsessive Compulsive Disorder Patient Data"),
+    titlePanel("Obsessive Compulsive Disorder Patient Data Dashboard"),
 
     # Sidebar with a selector for patients characteristics 
     sidebarLayout(
         sidebarPanel(
-          selectInput("ethnicity", "Ethnicity", levels(ocd_dataset$ethnicity))  
+          selectInput("ethnicity", "Ethnicity", levels(clean_ocd_dataset$ethnicity))  
           ),
 
         # Show a plot of the generated distribution
@@ -27,18 +28,18 @@ ui <- fluidPage(
             
             navset_card_underline(
               title = "Visualizations",
-              nav_panel("Plot", titlePanel("gender Table"), plotOutput("genderTable")),
-              nav_panel("Summary", titlePanel("age Table"), plotOutput("ageTable")),
-              nav_panel("Table", titlePanel("Test2"))
+              nav_panel("Plot1", titlePanel("Gender chart"), plotOutput("genderTable")),
+              nav_panel("Table", titlePanel("Age Table"), plotOutput("ageTable")),
+              nav_panel("Plot2", titlePanel("Age category"), plotOutput("agecatTable"))
           
               ),
             p("The data available here gives an insight into the characteristics and distribution of Obsessive_Compulsive Disorder among adult patients."),
             tags$ul(
-              tags$li(tags$b("family_hist"), " - the patient has or does not have a family history of OCD"),
+              tags$li(tags$b("family_hist"), " - the presence or absence of a family history of OCD"),
               tags$li(tags$b("obs_type"), " - the type of obsession (religious, harm-related, etc)"),
-              tags$li(tags$b("comp_type"), " - the type of compulsion (ordering, checking, etc"),
+              tags$li(tags$b("comps_type"), " - the type of compulsion (ordering, checking, etc"),
               tags$li(tags$b("y_bocs_obs"), " - the patients score on YBOCS for obsession on a scale of 40"),
-              tags$li(tags$b("y_bocs_obs"), " - the patients score on YBOCS for compulsion on a scale of 40"),
+              tags$li(tags$b("y_bocs_comps"), " - the patients score on YBOCS for compulsion on a scale of 40"),
               tags$li(tags$b("age_cat"), " - the age categories of the patients (15-19, 20-24,.. 70+,"),
               tags$li(tags$b("depr_diag"), " - the presence or absence of depression as a comorbidity"),
               tags$li(tags$b("anx_diag"), " - the presence or absence of anxiety as a comorbidity"),
@@ -56,16 +57,23 @@ server <- function(input, output) {
     
   
   output$genderTable <- renderPlot({
-      filtered_data <- ocd_dataset %>% filter(ethnicity == input$ethnicity)
+      filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)
       ocd_by_gender <- filtered_data %>%
         group_by(gender) %>%
         tally()
       ggplot(ocd_by_gender, aes(x=gender, y=n))+ geom_col()
     })
     
-    
+  output$agecatTable <- renderPlot({
+      filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)  
+      bardata <- filtered_data  %>% 
+        group_by(age_cat) %>% 
+        tally()
+      barplot(height = bardata$n, names = bardata$age_cat)
+    })
+  
   output$ageTable <- renderPlot({
-    filtered_data <- ocd_dataset %>% filter(ethnicity == input$ethnicity)
+    filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)
     age_table <- filtered_data %>%
       tabyl(age_cat, gender) %>%
       adorn_totals(where = "both") %>%

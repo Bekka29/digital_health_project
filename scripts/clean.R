@@ -18,25 +18,26 @@ pacman::p_load(
 ocd_dataset <- read_csv(
                         here("data","ocd_dataset.csv"),
                         #name_repair = "universal",
-                          col_types = cols(`Patient ID` = col_character(),
-                                           `Age` = col_integer(),
-                                           `Gender` = col_factor(levels = c("Female", "Male")),
-                                           `Ethnicity` = col_factor(levels = c("African", "Asian", "Caucasian", "Hispanic")),
-                                           `Marital Status` = col_factor(levels = c("Single", "Married", "Divorced")),
-                                           `Education Level` = col_factor(levels = c("High School","Some College", "College Degree","Graduate Degree")),
-                                           `OCD Diagnosis Date` = col_date(format = "%m/%d/%Y"),
-                                           `Duration of Symptoms (months)` = col_skip(),
-                                           `Previous Diagnoses` = col_skip(),           #col_factor(levels = c("None","GAD", "MDD", "Panic Disorder","PTSD")),
-                                           `Family History of OCD` = col_factor(levels = c("Yes", "No")),
-                                           `Obsession Type` = col_factor(levels = c("Contamination","Harm-related", "Hoarding", "Religious","Symmetry")),
-                                           `Compulsion Type` = col_factor(levels = c("Checking", "Counting", "Ordering", "Praying","Washing")),
-                                           `Y-BOCS Score (Obsessions)` = col_integer(),
-                                           `Y-BOCS Score (Compulsions)` = col_integer(),
-                                           `Depression Diagnosis` = col_factor(levels = c("Yes","No")),
-                                           `Anxiety Diagnosis` = col_factor(levels = c("Yes","No")),
-                                           `Medications` = col_factor(levels = c("None", "Benzodiazepine", "SNRI", "SSRI"))
+                           col_types = cols(`Patient ID` = col_character(),
+                                            `Age` = col_integer(),
+                                            `Gender` = col_factor(levels = c("Female", "Male")),
+                                            `Ethnicity` = col_factor(levels = c("African", "Asian", "Caucasian", "Hispanic")),
+                                            `Marital Status` = col_factor(levels = c("Single", "Married", "Divorced")),
+                                            `Education Level` = col_factor(levels = c("High School","Some College", "College Degree","Graduate Degree")),
+                                            `OCD Diagnosis Date` = col_date(format = "%m/%d/%Y"),
+                                            `Duration of Symptoms (months)` = col_skip(),
+                                            `Previous Diagnoses` = col_skip(),           #col_factor(levels = c("None","GAD", "MDD", "Panic Disorder","PTSD")),
+                                            `Family History of OCD` = col_factor(levels = c("Yes", "No")),
+                                            `Obsession Type` = col_factor(levels = c("Contamination","Harm-related", "Hoarding", "Religious","Symmetry")),
+                                            `Compulsion Type` = col_factor(levels = c("Checking", "Counting", "Ordering", "Praying","Washing")),
+                                            `Y-BOCS Score (Obsessions)` = col_integer(),
+                                            `Y-BOCS Score (Compulsions)` = col_integer(),
+                                            `Depression Diagnosis` = col_factor(levels = c("Yes","No")),
+                                            `Anxiety Diagnosis` = col_factor(levels = c("Yes","No")),
+                                            `Medications` = col_factor(levels = c("None", "Benzodiazepine", "SNRI", "SSRI"))
                                            ),
-                        )
+)
+
 
 
 
