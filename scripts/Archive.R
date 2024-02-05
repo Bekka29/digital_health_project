@@ -188,8 +188,7 @@ boxplot(clean_ocd_dataset$y_bocs_obs,
         xlab =  "score",
         ylab = "y_bocs_score",
         col = "orange",
-        border = "brown",
-        horizontal = TRUE)
+        border = "brown")
 
 
 y_bocs_obs <- clean_ocd_dataset$y_bocs_obs

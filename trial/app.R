@@ -8,7 +8,7 @@ pacman::p_load(
 
 source("scripts/clean.R")
 
-glimpse(clean_ocd_dataset)      
+#glimpse(clean_ocd_dataset)      
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -31,11 +31,13 @@ ui <- fluidPage(
             
             navset_card_underline(
               title = "Visualizations",
-              nav_panel("Plot1", titlePanel("Gender chart"), plotOutput("genderTable")),
-              nav_panel("Table", titlePanel("Age Table"), plotOutput("ageTable")),
-              nav_panel("Plot2", titlePanel("Age category"), plotOutput("agecatTable"))
-          
+              nav_panel("Gender Chart", titlePanel("Gender chart"), plotOutput("genderTable")),
+              nav_panel("Age Table", titlePanel("Age Table"), plotOutput("ageTable")),
+              nav_panel("Age Category Chart", titlePanel("Age category"), plotOutput("agecatTable")),
+              nav_panel("Y-BOCS Plot", titlePanel("Y-BOCS Boxplot"), plotOutput("box_plot"))
+              
               ),
+            
             p("The data available here gives an insight into the characteristics and distribution of Obsessive_Compulsive Disorder among adult patients."),
             tags$ul(
               tags$li(tags$b("family_hist"), " - the presence or absence of a family history of OCD"),
@@ -56,30 +58,30 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-   
-   filtered_data <- reactive({
+  # Creating a filtered dataset
+  filtered_data <- reactive({
       clean_ocd_dataset <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity &
                                                           age_cat == input$age_cat )
     })
-  
-  
+
+  #Creating a barchart for the filtered dataset by gender
   output$genderTable <- renderPlot({
-      #filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)
-      ocd_by_gender <- filtered_data() %>%
+     ocd_by_gender <- filtered_data() %>%
         group_by(gender) %>%
         tally()
       ggplot(ocd_by_gender, aes(x=gender, y=n )) + geom_col() 
     })
-    
+ 
+  #Creating a barchart for the age categories   
   output$agecatTable <- renderPlot({
-      #filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)  
       bardata <- filtered_data()  %>% 
         group_by(age_cat) %>% 
         tally()
       barplot(height = bardata$n, names = bardata$age_cat )
     })
   
-   output$ageTable <- renderPlot({
+  #Creating a table that shows the age distribution by gender
+  output$ageTable <- renderPlot({
      #filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)
      age_table <- filtered_data() %>%
        tabyl(age_cat, gender) %>%
@@ -91,26 +93,28 @@ server <- function(input, output) {
          row_name = "Age Category",
          col_name = "Gender")
 
-    ggtexttable(age_table)
+      ggtexttable(age_table)
 
      })
   
-  # output$boxplot <- renderPlot({
-  #  # ggplot(filtered_data, aes(y = n, x=y-bocs_obs, fill =gender)) + geom_boxplot()+
-  #   #theme(legend.position = "none")+ labs(title = "Boxplot of Y-BOCS score by gender")
-  #   boxdata <- filtered_data()  %>% 
-  #     group_by(y_bocs_obs) %>%
-  #   boxplot(y_bocs_obs,
-  #           main = "y-bocs score",
-  #           xlab =  "score",
-  #           ylab = "y_bocs_score",
-  #           col = "orange",
-  #           border = "brown",
-  #           horizontal = TRUE)
-  #   
-  # })
-  # 
-    }
+  #Creating a boxplot of the filtered data based on Y-BOCS Scores
+  output$box_plot <- renderPlot({
+      y_bocs_obs <- clean_ocd_dataset$y_bocs_obs
+      y_bocs_comps <- clean_ocd_dataset$y_bocs_comps
+        boxplot(y_bocs_obs, y_bocs_comps,
+              main = "Y-BOCS for Obsession and Compulsion",
+              at = c(1, 4),
+              names = c("y_bocs_obs", "y_bocs_comps"),
+              las = 2,
+              col = c("orange", "red"),
+              border = "brown",
+              horizontal = TRUE)
+  })
+  
+  
+
+}
+
 
 # Run the application 
 shinyApp(ui = ui, server = server)
