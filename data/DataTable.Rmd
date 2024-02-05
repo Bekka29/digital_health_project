@@ -84,11 +84,7 @@ mutate(
     y_bocs_comp > 19 & y_bocs_comp <= 29 ~ "moderate",
     y_bocs_comp > 29                     ~ "severe"),
   
-  #cats_fac = c("obs_cat", "comp_cat"),
-  # ocd_dataset$comp_cat <- as.factor(ocd_dataset$comp_cat),
-  # ocd_dataset$obs_cat <- as.factor (ocd_dataset$obs_cat),
-  # ocd_dataset$obs
-  #comp_cat <- as.factor(ocd_dataset$comp_cat),
+ 
   
   across(cols_fac, as.factor),
   
@@ -104,10 +100,7 @@ ocd_dataset$comp_cat <- as.factor(ocd_dataset$comp_cat)
 ocd_dataset$obs_cat <- as.factor (ocd_dataset$obs_cat)
 
   
-#ocd_dataset%>% tabyl(age_cat)
-#ocd_dataset%>% tabyl(obs_cat)
 
-#ocd_dataset%>% tabyl(comp_cat)
   
   
   
@@ -286,8 +279,7 @@ flextable(age_table)
 
 ## Including Plots
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{}
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

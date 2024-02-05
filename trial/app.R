@@ -14,17 +14,20 @@ glimpse(clean_ocd_dataset)
 ui <- fluidPage(
 
     # Application title
-    titlePanel("Obsessive Compulsive Disorder Patient Data Dashboard"),
+    titlePanel("Obsessive Compulsive Disorder Regional Dashboard"),
 
     # Sidebar with a selector for patients characteristics 
     sidebarLayout(
         sidebarPanel(
-          selectInput("ethnicity", "Ethnicity", levels(clean_ocd_dataset$ethnicity))  
-          ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
+          #selector for ethnicity
+          selectInput("ethnicity", "Select Ethnicity", levels(clean_ocd_dataset$ethnicity)),
           
+          selectInput("age_cat", "Select Age Category", levels(clean_ocd_dataset$age_cat))  
+        ),
+    
+        
+    # Show a plot of the generated distribution
+        mainPanel(
             
             navset_card_underline(
               title = "Visualizations",
@@ -46,48 +49,67 @@ ui <- fluidPage(
               tags$li(tags$b("obs_cat"), " - the severity of obsession based on the YBOCS score"),
               tags$li(tags$b("comp_cat"), " - the severity of compulsion based on the YBOCS score"),
             )
-          )
-        )
-      )
+          ),))
+        
+      
    
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+   
+   filtered_data <- reactive({
+      clean_ocd_dataset <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity &
+                                                          age_cat == input$age_cat )
+    })
   
-    
   
   output$genderTable <- renderPlot({
-      filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)
-      ocd_by_gender <- filtered_data %>%
+      #filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)
+      ocd_by_gender <- filtered_data() %>%
         group_by(gender) %>%
         tally()
-      ggplot(ocd_by_gender, aes(x=gender, y=n))+ geom_col()
+      ggplot(ocd_by_gender, aes(x=gender, y=n )) + geom_col() 
     })
     
   output$agecatTable <- renderPlot({
-      filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)  
-      bardata <- filtered_data  %>% 
+      #filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)  
+      bardata <- filtered_data()  %>% 
         group_by(age_cat) %>% 
         tally()
-      barplot(height = bardata$n, names = bardata$age_cat)
+      barplot(height = bardata$n, names = bardata$age_cat )
     })
   
-  output$ageTable <- renderPlot({
-    filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)
-    age_table <- filtered_data %>%
-      tabyl(age_cat, gender) %>%
-      adorn_totals(where = "both") %>%
-      adorn_percentages(denominator = "col") %>%
-      adorn_pct_formatting()  %>%
-      adorn_ns(position = "front") %>%
-      adorn_title(
-        row_name = "Age Category",
-        col_name = "Gender")
-    
+   output$ageTable <- renderPlot({
+     #filtered_data <- clean_ocd_dataset %>% filter(ethnicity == input$ethnicity)
+     age_table <- filtered_data() %>%
+       tabyl(age_cat, gender) %>%
+       adorn_totals(where = "both") %>%
+       adorn_percentages(denominator = "col") %>%
+       adorn_pct_formatting()  %>%
+       adorn_ns(position = "front") %>%
+       adorn_title(
+         row_name = "Age Category",
+         col_name = "Gender")
+
     ggtexttable(age_table)
-  
+
      })
-    
+  
+  # output$boxplot <- renderPlot({
+  #  # ggplot(filtered_data, aes(y = n, x=y-bocs_obs, fill =gender)) + geom_boxplot()+
+  #   #theme(legend.position = "none")+ labs(title = "Boxplot of Y-BOCS score by gender")
+  #   boxdata <- filtered_data()  %>% 
+  #     group_by(y_bocs_obs) %>%
+  #   boxplot(y_bocs_obs,
+  #           main = "y-bocs score",
+  #           xlab =  "score",
+  #           ylab = "y_bocs_score",
+  #           col = "orange",
+  #           border = "brown",
+  #           horizontal = TRUE)
+  #   
+  # })
+  # 
     }
 
 # Run the application 

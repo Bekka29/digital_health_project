@@ -176,3 +176,32 @@ age_table <- clean_ocd_dataset %>%
 
 # ggtexttable(age_table)
 plot(tableGrob(age_table))
+
+
+boxplot(clean_ocd_dataset$y_bocs_obs)
+
+
+
+
+boxplot(clean_ocd_dataset$y_bocs_obs,
+        main = "y-bocs score",
+        xlab =  "score",
+        ylab = "y_bocs_score",
+        col = "orange",
+        border = "brown",
+        horizontal = TRUE)
+
+
+y_bocs_obs <- clean_ocd_dataset$y_bocs_obs
+y_bocs_comps <- clean_ocd_dataset$y_bocs_comps
+boxplot(y_bocs_obs, y_bocs_comps,
+        main = "Y-BOCS for Obsession and Compulsion",
+        at = c(1, 4),
+        names = c("y_bocs_obs", "y_bocs_comps"),
+        las = 2,
+        col = c("orange", "red"),
+        border = "brown",
+        horizontal = TRUE)
+
+
+
