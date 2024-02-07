@@ -1,8 +1,8 @@
 #Install Packages-------------------------
 pacman::p_load(
   ggplot,      # plot charts
-  ggpubr,       # textual tables
-  gridExtra
+  ggpubr,      # textual tables
+  gridExtra    # high level functions for grid graphic objects
   
 )
 
@@ -11,7 +11,6 @@ source("scripts/clean.R")
 
 
 #Time to analyze data!
-
 
 #Grouping data------------------------------------------
 
@@ -148,7 +147,6 @@ age_table <- clean_ocd_dataset %>%
     row_name = "Age Category",
     col_name = "Gender")
 
-# ggtexttable(age_table)
 plot(tableGrob(age_table))
 
 #Create a box plot for YBOCS scores
