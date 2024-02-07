@@ -17,11 +17,11 @@ ui <- fluidPage(
     # Application title
     titlePanel( "Obsessive Compulsive Disorder Dashboard"),
     br(),
-    p("Obsessive Compulsive disorder (OCD) is a neuropsychiatric disorder or mental health disorder characterized by uncontrollable and recurring thoughts, known as obsessions, and repetitive behaviours, referred to as compulsions. These behaviours are time-consuming and significantly disrupt daily life, as the thoughts are intrusive and induce anxiety. Common obsessions encompass fears of germs or contamination, concerns about causing harm, a desire for perfect order, and thoughts related to sex, religion, or harm. Compulsions manifest as ritualistic or repetitive actions, including excessive cleaning, handwashing, item arranging, repeated checking, counting, and praying. Engaging in these behaviours provides temporary relief from anxiety. https://doi.org/10.3389/fpsyt.2022.927184"),
+    p("Obsessive Compulsive disorder (OCD) is a neuropsychiatric disorder or mental health disorder characterized by uncontrollable and recurring thoughts, known as obsessions, and repetitive behaviours, referred to as compulsions. These behaviours are time-consuming and significantly disrupt daily life, as the thoughts are intrusive and induce anxiety. Common obsessions encompass fears of germs or contamination, concerns about causing harm, a desire for perfect order, and thoughts related to sex, religion, or harm. Compulsions manifest as ritualistic or repetitive actions, including excessive cleaning, handwashing, item arranging, repeated checking, counting, and praying. Engaging in these behaviours provides temporary relief from anxiety.[1]"),
     br(),
-    p("Affecting approximately 1-2.5% of the population, with subthreshold forms observed in about a third, OCD is twice as prevalent as Schizophrenia and exhibits elevated levels of suicidality. Adult patients with OCD have a higher incidence of completed suicide attempts compared to the general population https://doi.org/10.4103/psychiatry.IndianJPsychiatry_524_18, resulting in a significant societal and healthcare burden. There is a treatment gap due to problems in diagnosing the disorder and the global public health burden of OCD is likely higher than what is known  "),
+    p("Affecting approximately 1-2.5% of the population, with subthreshold forms observed in about a third, OCD is twice as prevalent as Schizophrenia and exhibits elevated levels of suicidality. Adult patients with OCD have a higher incidence of completed suicide attempts compared to the general population[2], resulting in a significant societal and healthcare burden. There is a treatment gap due to problems in diagnosing the disorder and the global public health burden of OCD is likely higher than what is known."),
     br(),
-    p("The Yale-Brown Obsessive-Compulsive Scale (Y-BOCS) is the clinical “gold” standard for the level of severity of OCD. it measures obsession and compulsion severity separately https://doi.org/10.3389/fpsyt.2010.00018 & https://doi.org/10.1007/978-3-540-68706-1_1421 . The higher the score, the more severe the disorder. "),
+    p("The Yale-Brown Obsessive-Compulsive Scale (Y-BOCS) is the clinical “gold” standard for the level of severity of OCD. it measures obsession and compulsion severity separately[3,4]. The higher the score, the more severe the disorder."),
 
 
 
@@ -35,7 +35,7 @@ ui <- fluidPage(
         ),
     
         
-    # Show plots of the generated distribution
+        # Show plots of the generated distribution
         mainPanel(
             
             navset_card_underline(
@@ -50,16 +50,29 @@ ui <- fluidPage(
               ),
             
             p("The data available here gives an insight into the characteristics and distribution of Obsessive-Compulsive Disorder among adult patients."),
-            tags$ul(
-              tags$li(tags$b("obs_type"), " - the type of obsession (religious, harm-related, etc)"),
-              tags$li(tags$b("comps_type"), " - the type of compulsion (ordering, checking, etc"),
-              tags$li(tags$b("y_bocs_obs"), " - the patients score on YBOCS for obsession on a scale of 40"),
-              tags$li(tags$b("y_bocs_comps"), " - the patients score on YBOCS for compulsion on a scale of 40"),
-              tags$li(tags$b("age_cat"), " - the age categories of the patients (15-19, 20-24,.. 70+,"),
-              tags$li(tags$b("obs_cat"), " - the severity of obsession based on the YBOCS score"),
-              tags$li(tags$b("comp_cat"), " - the severity of compulsion based on the YBOCS score"),
-            )
-          ),))
+              tags$ul(
+                tags$li(tags$b("obs_type"), " - the type of obsession (religious, harm-related, etc)"),
+                tags$li(tags$b("comps_type"), " - the type of compulsion (ordering, checking, etc"),
+                tags$li(tags$b("y_bocs_obs"), " - the patients score on YBOCS for obsession on a scale of 40"),
+                tags$li(tags$b("y_bocs_comps"), " - the patients score on YBOCS for compulsion on a scale of 40"),
+                tags$li(tags$b("age_cat"), " - the age categories of the patients (15-19, 20-24,.. 70+,"),
+                tags$li(tags$b("obs_cat"), " - the severity of obsession based on the YBOCS score"),
+                tags$li(tags$b("comp_cat"), " - the severity of compulsion based on the YBOCS score"),
+              )
+        ),
+    ),
+  #Reference section
+  tags$b("References"),
+    
+  tags$ol(
+    tags$li("https://doi.org/10.3389/fpsyt.2022.927184"),
+    tags$li("https://doi.org/10.4103/psychiatry.IndianJPsychiatry_524_18"),
+    tags$li("https://doi.org/10.3389/fpsyt.2010.00018"),
+    tags$li("https://doi.org/10.1007/978-3-540-68706-1_1421"),
+    
+    
+  )
+)
         
 
   # Define server logic
