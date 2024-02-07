@@ -7,7 +7,7 @@ pacman::p_load(
 )
 
 
-source("scripts/clean.R")
+source("clean.R")
 
 
 #Time to analyze data!

@@ -16,7 +16,7 @@ pacman::p_load(
 #Import Data and Edit datatypes---------------------
 
 ocd_dataset <- read_csv(
-                        here("data","ocd_dataset.csv"),
+                        here("ocd_dataset.csv"),
                         #name_repair = "universal",
                            col_types = cols(`Patient ID` = col_character(),
                                             `Age` = col_integer(),

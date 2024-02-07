@@ -8,7 +8,7 @@ pacman::p_load(
   
   )
 # Import data--------------------------------------------
-source("scripts/clean.R")
+source("clean.R")
 
 
 # Define UI for OCD application features------------------------
@@ -45,8 +45,8 @@ ui <- fluidPage(
               nav_panel("Obsession Type", titlePanel("Obsession type"), plotOutput("obstypeTable")),
               nav_panel("Compulsion Type", titlePanel("Compulsion type"), plotOutput("compstypeTable")),
               nav_panel("Y-BOCS Scores", titlePanel("Y-BOCS Boxplot"), plotOutput("box_plot")),
-              nav_panel("Obsession", titlePanel("obsession severity"), plotOutput("obsTable")),
-              nav_panel("Compulsion", titlePanel("compulsion severity"), plotOutput("compTable"))
+              nav_panel("Obsession Severity", titlePanel("obsession severity"), plotOutput("obsTable")),
+              nav_panel("Compulsion Severity", titlePanel("compulsion severity"), plotOutput("compTable"))
               ),
             
             p("The data available here gives an insight into the characteristics and distribution of Obsessive-Compulsive Disorder among adult patients."),
@@ -167,7 +167,6 @@ server <- function(input, output) {
      
     })
     
-        
 
 }
 
