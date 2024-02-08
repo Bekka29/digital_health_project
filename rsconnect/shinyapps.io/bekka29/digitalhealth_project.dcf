@@ -4,12 +4,8 @@ username: bekka29
 account: bekka29
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 11163609
-<<<<<<< HEAD
-bundleId: 8231745
-=======
-bundleId: 8231622
->>>>>>> c385fadbaccccdffdc9275dbb1c7fa7354a16853
+appId: 11167481
+bundleId: 8232947
 url: https://bekka29.shinyapps.io/digitalhealth_project/
 version: 1
 asMultiple: FALSE
