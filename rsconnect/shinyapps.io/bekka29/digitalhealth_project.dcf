@@ -1,0 +1,12 @@
+name: digitalhealth_project
+title: digitalhealth_project
+username: bekka29
+account: bekka29
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11163609
+bundleId: 8231745
+url: https://bekka29.shinyapps.io/digitalhealth_project/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

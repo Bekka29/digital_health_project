@@ -5,6 +5,16 @@ pacman::p_load(
   bslib,         #UI toolkit
   ggpubr,        #creating and customizing plots
   ggplot2,       #data visualization 
+  ggplot,
+  rio,        # importing data  
+  here,       # relative file pathways 
+  dplyr,      # enables data manipulation
+  epikit,     # age_categories() function
+  forcats,    # enables handling of categorical variables
+  readr,      # reads rectangular data like csv
+  styler,     # formats code according to style guide and maintains style consistency
+  tidyverse,  # data management and visualization
+  janitor     # data cleaning and tables
   
   )
 # Import data--------------------------------------------
@@ -15,14 +25,15 @@ source("clean.R")
 ui <- fluidPage(
 
     # Application title
-    titlePanel( "Obsessive Compulsive Disorder Dashboard"),
+    titlePanel(HTML("<h1 style= 'text-align:center; font-weight: bold;'>Obsessive Compulsive Disorder Dashboard</h1>")),
     br(),
     p("Obsessive Compulsive disorder (OCD) is a neuropsychiatric disorder or mental health disorder characterized by uncontrollable and recurring thoughts, known as obsessions, and repetitive behaviours, referred to as compulsions. These behaviours are time-consuming and significantly disrupt daily life, as the thoughts are intrusive and induce anxiety. Common obsessions encompass fears of germs or contamination, concerns about causing harm, a desire for perfect order, and thoughts related to sex, religion, or harm. Compulsions manifest as ritualistic or repetitive actions, including excessive cleaning, handwashing, item arranging, repeated checking, counting, and praying. Engaging in these behaviours provides temporary relief from anxiety.[1]"),
     br(),
     p("Affecting approximately 1-2.5% of the population, with subthreshold forms observed in about a third, OCD is twice as prevalent as Schizophrenia and exhibits elevated levels of suicidality. Adult patients with OCD have a higher incidence of completed suicide attempts compared to the general population[2], resulting in a significant societal and healthcare burden. There is a treatment gap due to problems in diagnosing the disorder and the global public health burden of OCD is likely higher than what is known."),
     br(),
     p("The Yale-Brown Obsessive-Compulsive Scale (Y-BOCS) is the clinical “gold” standard for the level of severity of OCD. it measures obsession and compulsion severity separately[3,4]. The higher the score, the more severe the disorder."),
-
+    
+    hr(),
 
 
     # Sidebar with a selector for patients characteristics 
@@ -39,7 +50,7 @@ ui <- fluidPage(
         mainPanel(
             
             navset_card_underline(
-              title = "Visualizations",
+              title = tags$b("Visualizations"),
               nav_panel("Gender Chart", titlePanel("Gender chart"), plotOutput("genderTable")),
               nav_panel("Age Table", titlePanel("Age Table"), plotOutput("ageTable")),
               nav_panel("Obsession Type", titlePanel("Obsession type"), plotOutput("obstypeTable")),
@@ -61,6 +72,8 @@ ui <- fluidPage(
               )
         ),
     ),
+  br(),
+  hr(),
   #Reference section
   tags$b("References"),
     
@@ -69,13 +82,21 @@ ui <- fluidPage(
     tags$li("https://doi.org/10.4103/psychiatry.IndianJPsychiatry_524_18"),
     tags$li("https://doi.org/10.3389/fpsyt.2010.00018"),
     tags$li("https://doi.org/10.1007/978-3-540-68706-1_1421"),
-    
-    
-  )
+  ),
+  br(),
+  br(),
+  tags$footer(HTML("<div style='bottom:11.5px; text-align: center; width:100%;
+                 height:20px; 
+                 color: black;
+                 padding: 0px;
+                 background-color: lightgrey;
+                 z-index: 100;'> 
+                   &copy; 2024 Digital Health Project by Rebekah Gambo</div>")
+              ),
 )
         
 
-  # Define server logic
+# Define server logic
 server <- function(input, output) {
   
   # Creating a filtered data set
@@ -89,7 +110,7 @@ server <- function(input, output) {
       ocd_by_gender <- filtered_data() %>%
         group_by(gender) %>%
         tally()
-       ggplot(ocd_by_gender, aes(x=gender, y=n )) + geom_col( fill = "darksalmon" , color = "brown") 
+       ggplot(ocd_by_gender, aes(x=gender, y=n )) + geom_col( fill = c("maroon","darkblue") , color = "lightblue") 
   
     })
  
